@@ -10,7 +10,7 @@
 
 ## 下载与运行
 
-1. 前往 [GitHub Releases](https://github.com/xiayin1991/biaoqianshu/releases/tag/v1.7.1) 下载 `标签树-Portable-v1.7.1.zip`。
+1. 前往 [GitHub Releases](https://github.com/xiayin1991/biaoqianshu/releases/tag/v1.7.1) 下载 `biaoqianshu-Portable-v1.7.1.zip`。
 2. 解压压缩包。
 3. 双击 `标签树.exe` 启动，无需安装。
 

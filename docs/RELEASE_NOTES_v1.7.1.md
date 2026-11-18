@@ -2,7 +2,7 @@
 
 - 发布日期：2026-11-18
 - 状态：首个实测可用版本
-- 安装包：`标签树-Portable-v1.7.1.zip`
+- 安装包：`biaoqianshu-Portable-v1.7.1.zip`
 - 安装包大小：35,373,229 bytes
 - SHA-256：`0918292E03FA67A2B9A503AB667D654F49E78C43F7DA87759C122830FC7153BF`
 
