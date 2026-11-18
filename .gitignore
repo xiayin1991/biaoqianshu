@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+build/
+build-*/
+dist/
+dist-*/
+*.spec
+
+# Application data
+Projects/
+*.log
+
+# Editor and operating system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

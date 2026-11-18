@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>标签树 v1.7.1</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">✦</div>
+        <div>
+          <div class="brand-title">标签树</div>
+          <div class="brand-subtitle">为教研老师设计的题集打标工具 · 让专家的判断可视化</div>
+        </div>
+      </div>
+      <div class="top-center">
+        <span class="project-name" id="projectName">未打开项目</span>
+      </div>
+      <div class="top-actions">
+        <button class="btn primary" id="btnImport">导入试卷</button>
+        <button class="btn" id="btnOpen">打开项目</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="panel tree-panel">
+        <div class="panel-head">
+          <div>
+            <h1>实时预览</h1>
+            <p>标签树从试卷名向上生长，节点大小和连线粗细反映贴标次数</p>
+          </div>
+          <div class="tree-tools">
+            <div class="tree-stat" id="tagTotal">
+              <span>标签累计：<b id="tagAssignmentTotal">0</b></span>
+              <span class="tree-stat-divider">·</span>
+              <span>去重：<b id="tagUniqueTotal">0</b></span>
+            </div>
+            <div class="mode-switch" id="treeScopeSwitch" data-value="whole" role="group" aria-label="标签树范围">
+              <span class="mode-slider" aria-hidden="true"></span>
+              <button class="mode-option active" type="button" data-value="whole">整卷</button>
+              <button class="mode-option" type="button" data-value="single">单题</button>
+            </div>
+            <div class="mode-switch" id="metricModeSwitch" data-value="count" role="group" aria-label="统计口径">
+              <span class="mode-slider" aria-hidden="true"></span>
+              <button class="mode-option active" type="button" data-value="count">题数</button>
+              <button class="mode-option" type="button" data-value="score">分值</button>
+            </div>
+            <button class="btn mini" id="btnExportPng">导出 PNG</button>
+            <button class="btn mini" id="btnExportMd">导出 MD</button>
+            <button class="btn mini" id="btnExportPdf">导出 PDF</button>
+          </div>
+        </div>
+        <div class="tree-stage" id="treeStage">
+          <svg id="treeSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+          <div class="tree-tooltip hidden" id="treeTooltip"></div>
+          <div class="empty-state" id="treeEmpty">导入试卷后，标签树将在这里生长</div>
+        </div>
+      </section>
+
+      <div class="splitter vertical" id="splitVertical"></div>
+      <section class="right-column">
+        <section class="panel preview-panel">
+          <div class="panel-head compact preview-head">
+            <h2>题目预览</h2>
+            <div class="question-meta" id="questionMeta">
+              <input class="meta-qid" id="questionQidInput" type="text" maxlength="6" placeholder="题号" aria-label="题号" disabled />
+              <label class="score-field" title="本题分值">
+                <input id="questionScoreInput" type="number" min="0.1" step="0.5" placeholder="分值" aria-label="本题分值" disabled />
+                <span>分</span>
+              </label>
+              <span class="meta-info" id="questionTagCount">本题已打 0 个标签</span>
+            </div>
+            <div class="preview-actions">
+              <button class="btn frame" id="btnFrame">框题</button>
+              <div class="nav-block" title="原试卷翻页">
+                <span class="nav-label">页</span>
+                <button class="btn icon" id="btnPagePrev">▲</button>
+                <input type="number" id="currentPage" value="1" min="1" />
+                <span class="slash">/</span>
+                <span id="totalPages">0</span>
+                <button class="btn icon" id="btnPageNext">▼</button>
+              </div>
+              <div class="nav-block" title="已框题目切换">
+                <span class="nav-label">题</span>
+                <button class="btn icon" id="btnQuestionPrev">▲</button>
+                <input type="number" id="currentQuestion" value="1" min="1" />
+                <span class="slash">/</span>
+                <span id="totalQuestions">0</span>
+                <button class="btn icon" id="btnQuestionNext">▼</button>
+              </div>
+            </div>
+          </div>
+          <div class="image-viewport" id="imageViewport">
+            <div class="image-stage" id="imageStage">
+              <img id="questionImage" alt="题目预览" draggable="false" />
+              <div class="crop-layer" id="cropLayer">
+                <div class="crop-box" id="cropBox">
+                  <button class="crop-confirm" id="btnCropConfirm">确定</button>
+                </div>
+              </div>
+            </div>
+            <div class="empty-state" id="imageEmpty">点击右上角“导入试卷”开始</div>
+          </div>
+        </section>
+
+        <div class="splitter horizontal" id="splitHorizontal"></div>
+        <section class="panel tag-panel">
+          <div class="panel-head compact">
+            <div>
+              <h2>打标</h2>
+              <p>用 <code>/</code> 来进行标签分级，例如：平面几何/三角形/面积</p>
+            </div>
+            <span class="tag-count" id="tagCount">0 行标签</span>
+          </div>
+          <div class="tag-entry">
+            <div class="tag-input-wrap">
+              <input id="tagInput" type="text" placeholder="平面几何/三角形/面积" autocomplete="off" aria-autocomplete="list" aria-controls="tagSuggestions" />
+              <div class="tag-suggestions hidden" id="tagSuggestions" role="listbox"></div>
+            </div>
+            <button class="btn primary" id="btnAddTag">添加标签</button>
+          </div>
+          <div class="tag-list" id="tagList"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <div class="modal hidden" id="cropModal">
+    <div class="modal-card">
+      <h3>录入题目信息</h3>
+      <label>题号 <input id="cropQnum" type="text" placeholder="例如 P2-17" /></label>
+      <label>本题分值 <input id="cropScore" type="number" min="0" step="0.5" placeholder="例如 5" /></label>
+      <p>若本题有多个小题，请填写总分值。</p>
+      <div class="modal-actions">
+        <button class="btn mini" id="btnCropCancel">取消</button>
+        <button class="btn primary" id="btnCropOk">确定</button>
+      </div>
+    </div>
+  </div>  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
+
+
+
